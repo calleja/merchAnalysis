@@ -1,0 +1,7 @@
+A few ideas for studies on the data
+
+#study to look at the price fluctuation over time by Barcode; rank those with higher variance; this would essentially serve as an "outlier" study for QA purposes allowing Merch to rectify price fluctuations or to negotiate better pricing by vendors.
+
+#weekly sales by barcode: sales volume; taking care to single out spoilage (discounted volumes). The current dataset is a limited range. You can go out to Vori and download data going back all the way to Sept '23
+
+#meta-study to count the number of weeks and range for sales data by Barcode; NOTE the date range of the dataset is limited
