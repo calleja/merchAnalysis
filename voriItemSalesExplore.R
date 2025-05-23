@@ -4,16 +4,18 @@ library(fpp3)
 library(ggplot2)
 library(lubridate)
 
+#set to your local working directory
 setwd('/home/candela/pCloudDrive/pCloud Backup/mofongo-HP-EliteBook-840-G8-Notebook-PC/Documents/ghfc/merch/merch_analysis_git')
 
 dir()
 getwd()
 items <- read.csv('./Itemswithcost.csv')
 
-sapply(items.2,class)
+sapply(items,class)
 
+#cols of interest
 cols.tgt <- c('Order.Date','Department','Barcode','Product.Cost.Status','Each.Cost','Active.Vendor',
-'Retail.Price','Quantity','Weight','Items.Total','Sales','Cost.Of.Goods.Sold','Product.Name','Brand','Sold.By.Weight')
+'Retail.Price','Quantity','Weight','Items.Total','Sales','Cost.Of.Goods.Sold','Product.Name','Brand','Sold.By.Weight','Discount.And.Rewards')
 
 items |>
   select(all_of(cols.tgt)) -> items.2
@@ -36,7 +38,15 @@ items.2 |>
   rename(year = 'year(order.dt)',week_num = 'isoweek(order.dt)') |>
   arrange(Barcode,year,week_num)-> item.summary
 
-head(item.summary)
+#create a tsibble object: a very powerful time-series object required by the 'fpp' library
+#tsibble requires a unique key; making one on date, barcode, department, vendor
+#this tsibble focuses on Quantity only... you can expand it to other measures
+items.2 |>
+  group_by(order.dt,Department,Barcode,Active.Vendor) |>
+  summarize(Quantity = sum(Quantity)) |>
+  as_tsibble(key = c('Department','Barcode','Active.Vendor'), index = 'order.dt') -> item.ts
+
+head(item.ts)
 
 #study to count the number of weeks and range for sales data by Barcode; NOTE the date range of the dataset is limited
 item.summary |>
