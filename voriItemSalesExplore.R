@@ -30,7 +30,7 @@ items.2 |>
 week(items.2$order.dt)[1:4]
 isoweek(items.2$order.dt)[1:4]
 
-#weekly sales by Barcode
+#weekly sales by Barcode of non-weighted items
 items.2 |>
   filter(Sold.By.Weight == "false") |>
   group_by(Barcode,year(order.dt),isoweek(order.dt)) |>
@@ -46,7 +46,42 @@ items.2 |>
   summarize(Quantity = sum(Quantity)) |>
   as_tsibble(key = c('Department','Barcode','Active.Vendor'), index = 'order.dt') -> item.ts
 
+#check interval to ensure it's daily
+interval(item.ts)
+
 head(item.ts)
+
+#inspect keys
+key_data(item.ts)
+key_rows(item.ts) # row numbers by key index
+key_vars(item.ts)
+
+#fill gaps (days where there are no sales for the Barcode
+# handle missigness: https://tsibble.tidyverts.org/articles/implicit-na.html
+has_gaps(item.ts,.full=TRUE)
+
+item.ts |>
+  fill_gaps(Quantity = 0L, .full=TRUE) -> item.ts.ng
+
+class(item.ts.ng)
+class(item.ts)
+
+#doing this will wipe out the tsibble and make this is a grouped_df  
+item.ts.ng[is.na(item.ts.ng$Quantity),'Quantity'] <- 0
+
+item.ts.ng |>
+as_tsibble(key = c('Department','Barcode','Active.Vendor'), index = 'order.dt') -> item.ts.ng
+
+#plot a key
+item.ts |>
+  filter(Barcode == '632726047900' & Active.Vendor == 'Union Beer Distributors') |>
+  autoplot()
+
+item.ts.ng |>
+  filter(Barcode == '632726047900' & Active.Vendor == 'Union Beer Distributors') |>
+  autoplot()
+
+
 
 #study to count the number of weeks and range for sales data by Barcode; NOTE the date range of the dataset is limited
 item.summary |>
