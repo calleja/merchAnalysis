@@ -1,9 +1,9 @@
 library(tidyverse)
-library(randomForest)
 library(fpp3)
 library(ggplot2)
 library(lubridate)
 
+#based on reports in Vori: https://dash.vori.com/retail/reporting/sales/items-sales -> apply date parameters; compile report; hover on screen until the option to "show underlying data" -> export this
 #set to your local working directory
 setwd('/home/candela/pCloudDrive/pCloud Backup/mofongo-HP-EliteBook-840-G8-Notebook-PC/Documents/ghfc/merch/merch_analysis_git')
 
@@ -38,7 +38,7 @@ items.2 |>
   rename(year = 'year(order.dt)',week_num = 'isoweek(order.dt)') |>
   arrange(Barcode,year,week_num)-> item.summary
 
-#create a tsibble object: a very powerful time-series object required by the 'fpp' library
+#create a tsibble object: a powerful time-series dataframe compatible with many operatoins in the 'fpp' library
 #tsibble requires a unique key; making one on date, barcode, department, vendor
 #this tsibble focuses on Quantity only... you can expand it to other measures
 items.2 |>
@@ -64,7 +64,11 @@ item.ts |>
   fill_gaps(Quantity = 0L, .full=TRUE) -> item.ts.ng
 
 class(item.ts.ng)
+is_tsibble(item.ts.ng)
+
 class(item.ts)
+
+has_gaps(item.ts.ng,.full=TRUE)
 
 #doing this will wipe out the tsibble and make this is a grouped_df  
 item.ts.ng[is.na(item.ts.ng$Quantity),'Quantity'] <- 0
@@ -92,6 +96,24 @@ item.cnt |>
   arrange(desc(cnt),desc(first)) |>
   head()
 head()
+
+#abstract away from vendor and count units sold across time
+items.2 |>
+  group_by(order.dt, Barcode,Department) |>
+  summarize(total.sold = sum(Quantity), total.weight = sum(Weight)) -> agg.totals
+
+#any comprehensive study of sales pattern is limited by the duration of sales logs; Vori was only adopted in 09/2023
+#identify the distribution of tenure by Barcode
+items.2 |>
+  group_by(Barcode) |>
+  summarize(min=min(order.dt)) -> first.date.barcode
+
+#plot distribution by age
+first.date.barcode |>
+  group_by(min) |>
+  summarize(size=n()) |>
+  ggplot(aes(x=min,y=size)) +
+  geom_bar(stat="identity")
 
 #verify no NA
 sapply(items.2, function(x) sum(is.na(x)))
