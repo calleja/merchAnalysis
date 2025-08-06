@@ -7,22 +7,39 @@ library(lubridate)
 #set to your local working directory
 setwd('/home/candela/pCloudDrive/pCloud Backup/mofongo-HP-EliteBook-840-G8-Notebook-PC/Documents/ghfc/merch/merch_analysis_git')
 
+items <- read.csv('/home/candela/pCloudDrive/pCloud Backup/mofongo-HP-EliteBook-840-G8-Notebook-PC/Documents/ghfc/merch/voriExtracts/07012023-07102025.csv')
+
 dir()
 getwd()
+
 items <- read.csv('./Itemswithcost.csv')
 
-sapply(items,class)
+names(items) <- tolower(names(items))
 
+sapply(items,class)
+sort(names(items))
 #cols of interest
 cols.tgt <- c('Order.Date','Department','Barcode','Product.Cost.Status','Each.Cost','Active.Vendor',
 'Retail.Price','Quantity','Weight','Items.Total','Sales','Cost.Of.Goods.Sold','Product.Name','Brand','Sold.By.Weight','Discount.And.Rewards')
 
 items |>
-  select(all_of(cols.tgt)) -> items.2
+  select(all_of(tolower(cols.tgt))) -> items.2
 
 #Invoice reporting: Barcode could = Item Code
 items.2 |>
-  mutate(order.dt = as.Date(Order.Date, format = "%a, %b %d, %Y, %H:%M %p")) -> items.2
+  mutate(order.dt = as.Date(order.date, format = "%a, %b %d, %Y, %H:%M %p")) -> items.2
+
+#of unique barcodes by departrment
+#NOTE: department is notoriously incorrect
+items.2 |>
+  group_by(department) |>
+  summarize(barcode_cnt = n_distinct(barcode)) |>
+  arrange(desc(barcode_cnt))
+
+#barcode-department lookup
+items.2 |>
+  group_by(department,barcode) |>
+  summarize(n=1) -> dept.bar.lookup
 
 #study to look at the price fluctuation over time; rank those with higher variance
 
@@ -32,19 +49,22 @@ isoweek(items.2$order.dt)[1:4]
 
 #weekly sales by Barcode of non-weighted items
 items.2 |>
-  filter(Sold.By.Weight == "false") |>
-  group_by(Barcode,year(order.dt),isoweek(order.dt)) |>
-  summarize(total.qty.sold = sum(Quantity)) |>
+  filter(sold.by.weight == "false") |>
+  group_by(barcode,year(order.dt),isoweek(order.dt)) |>
+  summarize(total.qty.sold = sum(quantity)) |>
   rename(year = 'year(order.dt)',week_num = 'isoweek(order.dt)') |>
-  arrange(Barcode,year,week_num)-> item.summary
+  arrange(barcode,year,week_num)-> item.summary
 
 #create a tsibble object: a powerful time-series dataframe compatible with many operatoins in the 'fpp' library
-#tsibble requires a unique key; making one on date, barcode, department, vendor
+#tsibble requires a unique key; making one on date, barcode, department, vendor: this ensures that ea record from original df is preserved
 #this tsibble focuses on Quantity only... you can expand it to other measures
 items.2 |>
   group_by(order.dt,Department,Barcode,Active.Vendor) |>
   summarize(Quantity = sum(Quantity)) |>
   as_tsibble(key = c('Department','Barcode','Active.Vendor'), index = 'order.dt') -> item.ts
+
+#what is the key/index of tsibble as recognized internally
+key(item.ts)
 
 #check interval to ensure it's daily
 interval(item.ts)
@@ -105,15 +125,40 @@ items.2 |>
 #any comprehensive study of sales pattern is limited by the duration of sales logs; Vori was only adopted in 09/2023
 #identify the distribution of tenure by Barcode
 items.2 |>
-  group_by(Barcode) |>
+  group_by(barcode) |>
   summarize(min=min(order.dt)) -> first.date.barcode
 
-#plot distribution by age
+#plot distribution by earliest transaction record
 first.date.barcode |>
   group_by(min) |>
   summarize(size=n()) |>
   ggplot(aes(x=min,y=size)) +
   geom_bar(stat="identity")
+
+#class barcodes by number of  months
+items.2 |>
+  mutate(yrmo = yearmonth(order.dt)) |>
+  group_by(barcode) |>
+  summarize(num_yrmos = n_distinct(yrmo)) -> barcode.yrmo.cnt
+
+barcode.yrmo.cnt |>
+  arrange(barcode) |>
+  head(15)
+
+
+#first order.dt is Sept 2023
+barcode.yrmo.cnt |>
+  ggplot(aes(x=num_yrmos)) +
+  geom_bar(stat="count") +
+  labs(title = "Count barcodes by # of yearmonths of sales data")
+
+min(items.2$order.dt)
+  
+
+#display longevity by department
+barcode.yrmo.cnt |>
+  left_join()
+  
 
 #verify no NA
 sapply(items.2, function(x) sum(is.na(x)))
