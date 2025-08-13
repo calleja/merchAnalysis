@@ -42,6 +42,7 @@ items.2 |>
   summarize(n=1) -> dept.bar.lookup
 
 #study to look at the price fluctuation over time; rank those with higher variance
+#can print out those with highest var over a period of time
 
 #weekly sales by barcode
 week(items.2$order.dt)[1:4]
@@ -55,7 +56,7 @@ items.2 |>
   rename(year = 'year(order.dt)',week_num = 'isoweek(order.dt)') |>
   arrange(barcode,year,week_num)-> item.summary
 
-#create a tsibble object: a powerful time-series dataframe compatible with many operatoins in the 'fpp' library
+#create a tsibble object from the 'fpp' library: a powerful time-series dataframe compatible with many operations  
 #tsibble requires a unique key; making one on date, barcode, department, vendor: this ensures that ea record from original df is preserved
 #this tsibble focuses on Quantity only... you can expand it to other measures
 items.2 |>
