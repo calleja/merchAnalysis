@@ -3,6 +3,13 @@ library(fpp3)
 library(ggplot2)
 library(lubridate)
 
+#########################################
+##
+## FOR PURPOSES OF MERCH ANALYSIS: sales/unit analysis by Barcode, etc.
+## this project is done in collaboration with Julia Petrini
+##
+###############################
+
 #based on reports in Vori: https://dash.vori.com/retail/reporting/sales/items-sales -> apply date parameters; compile report; hover on screen until the option to "show underlying data" -> export this
 #set to your local working directory
 setwd('/home/candela/pCloudDrive/pCloud Backup/mofongo-HP-EliteBook-840-G8-Notebook-PC/Documents/ghfc/merch/merch_analysis_git')

@@ -1,0 +1,2 @@
+From Jennifer V (Merch Committee) in response to the survey results of Nov 2025:
+Really interesting!  and thanks for sharing the results! Might be too granular (and not the purpose of this survey), but would be interested to see more info about pantry broken down into smaller categories like pasta, cereal, condiments, shelf stable beverages, etc. . Are there sub-categories that correlate higher with produce, etc? And Might be a Vori thing (vs survey) but a comparison of percentage of sales and percentage of shelf space?

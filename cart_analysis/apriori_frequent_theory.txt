@@ -1,0 +1,22 @@
+1. https://medium.com/@anabelenmanjavacas/apriori-algorithm-98c15edb0afc
+2. https://www.analyticsinsight.net/latest-news/how-to-use-the-apriori-algorithm-for-market-basket-analysis#google_vignette
+3. https://www.guvi.in/blog/association-rule-in-data-science/
+4. https://www.appliedaicourse.com/blog/apriori-algorithm-in-machine-learning/
+5. https://medium.com/@mfandhi/apriori-basic-understanding-and-implementation-b7938f5bf424
+6. https://medium.com/edureka/apriori-algorithm-d7cc648d4f1e
+7. negative associations: https://pmc.ncbi.nlm.nih.gov/articles/PMC4052479/
+8. ECLAT: https://medium.com/@gabrielreversi/association-rules-the-eclat-algorithm-96d47f32f992
+
+association rules
+itemsets = subset of items in a cart; each record/orderID in Vori is composed of a set of items; an itemset is a subset of these. A particular subset may occur frequently in many carts; an itemset can be of any length - even 1
+market based analysis
+
+apriori algorithm 
+- support = the proportion of carts/orderIDs that contain the itemset
+- confidence = P(X|Y) - the probability of seeing X given that we see Y
+- lift (ostensibly a test for independence) = (support of X&Y) / [support(X) * support(Y)] ... if this eq > 1 then we can say there is a dependence between the two values (x and y)
+
+Eclat algorithm is a bit more efficient of the apriori algorithm
+
+STEPS:
+1) identify a support threshold to qualify itemsets
