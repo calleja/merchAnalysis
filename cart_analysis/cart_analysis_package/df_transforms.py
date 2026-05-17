@@ -1,8 +1,8 @@
 import pandas as pd
 
 def clean_df(df):
-    df = df.assign(order_dt = pd.to_datetime(df['Order Date'], errors = 'coerce'))
-    df.columns  = [i.replace(' ','_').lower() for i in df.columns]
+    df.columns = [i.replace(' ', '_').lower() for i in df.columns]
+    df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
     return df
 
 def subset_shopping(df):
