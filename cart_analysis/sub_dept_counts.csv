@@ -1,0 +1,129 @@
+department,sub_department,count
+PRODUCE,Produce Fruit,18736
+PRODUCE,PRODUCE,18207
+PRODUCE,Produce Root Vegetables,7529
+PRODUCE,Produce Allium,7520
+PRODUCE,Other Produce,6226
+DAIRY + FRIDGE,Cheese,5378
+DAIRY + FRIDGE,Yogurt,4011
+PRODUCE,Produce Leafy Greens,3885
+PRODUCE,"Produce Herbs and Spices, Fresh",3439
+DAIRY + FRIDGE,Eggs,3164
+BREAD,"Bread, Loaf",3060
+GROCERY,"Pasta, Shelf Stable",2408
+PRODUCE,Produce Packaged Greens,2301
+DAIRY + FRIDGE,"Tofu & Meat Alt, Refrig",2244
+GROCERY,"Snacks, Shelf Stable",2241
+DRINKS,"Water, Sparkling",2109
+MEAT + SEAFOOD,Poultry,2087
+GROCERY,"Pkgd Grains & Beans, Shelf Stable",2083
+BULK,"Nuts & Seeds, Bulk",2035
+BULK,"Fruits, Bulk",2001
+GROCERY,"Crackers, Shelf Stable",1795
+GROCERY,"Bars, Chocolate, Shelf Stable",1714
+BULK,"Grains, Bulk",1613
+DAIRY + FRIDGE,"Milk, Cow",1606
+GROCERY,"Tomatoes & Sauce, Shelf Stable",1554
+DAIRY + FRIDGE,"Salsas & Dips, Refrig",1426
+DRINKS,Soft Drinks,1378
+GROCERY,"Bars, Nutritional, Shelf Stable",1272
+FROZEN,"Dessert, Frozen",1252
+GROCERY,"Chips, Shelf Stable",1251
+GROCERY,"Condiments, Shelf Stable",1238
+ALCOHOLIC BEVERAGES,Beer,1148
+MEAT + SEAFOOD,"Meat, Deli",1125
+DAIRY + FRIDGE,DAIRY + FRIDGE,1117
+GROCERY,"Seafood, Shelf Stable",1098
+HOUSEHOLD,Cleaning Supplies,1094
+DRINKS,"NonDairy, Shelf Stable",1076
+FROZEN,"Meals, Frozen",1056
+GROCERY,"Nut & Seed Butters, Shelf Stable",1051
+DAIRY + FRIDGE,"Fermented, Refrig",1029
+BULK,"Spices, Bulk",1012
+GROCERY,"Cooking Sauces, Shelf Stable",1005
+HOUSEHOLD,Household,957
+DAIRY + FRIDGE,Butter,941
+BULK,"Coffee, Bulk",930
+MEAT + SEAFOOD,"Seafood, Refrig",916
+GROCERY,"Cookies, Shelf Stable",915
+FROZEN,"Produce, Frozen",886
+HOUSEHOLD,Paper Products,840
+GROCERY,"Sugar & Sweeteners, Shelf Stable",835
+MEAT + SEAFOOD,Sausage,823
+DRINKS,"Juice, Refrigerated",791
+PRODUCE,Produce Squash,791
+GROCERY,"Baking, Shelf Stable",785
+GROCERY,"Cereal, Shelf Stable",781
+GROCERY,"Miscellaneous, Shelf Stable",721
+MEAT + SEAFOOD,Beef,686
+GROCERY,"Oils, Shelf Stable",674
+DAIRY + FRIDGE,"Dairy Alt, Refrig",665
+BULK,"Beans, Bulk",655
+DAIRY + FRIDGE,"Pasta, Refrig",625
+PERSONAL CARE,Skin & Face Care,602
+BREAD,"Bread, Pastry",598
+BULK,"Cleaning/Personal Care, Bulk",574
+GROCERY,"Herbs & Spices, Shelf Stable",570
+PERSONAL CARE,Oral Care,553
+GROCERY,GROCERY,539
+PERSONAL CARE,Soap,537
+GROCERY,"Soup, Shelf Stable",530
+BULK,"Granola/Muesli, Bulk",511
+DAIRY + FRIDGE,Cream,507
+BULK,"Flours/Baking, Bulk",481
+GROCERY,"Tea, Shelf Stable",470
+GROCERY,"Fruit Spreads, Shelf Stable",458
+DAIRY + FRIDGE,"Bread, Refrig",414
+GROCERY,"Vinegar, Shelf Stable",414
+DRINKS,Non-Alcoholic / Mixers,395
+PRODUCE,Produce Fungi,392
+GROCERY,"Coffee, Shelf Stable",387
+BREAD,Bread,378
+HOUSEHOLD,Gift Household,373
+FROZEN,"Meat Alt, Frozen",364
+HOUSEHOLD,Bags,348
+BULK,"Misc, Bulk",348
+GROCERY,"Candy, Shelf Stable",344
+BULK,"Snacks, Bulk",342
+GROCERY,"Salsas & Dips, Shelf Stable",329
+GROCERY,"Bob's, Shelf Stable",327
+DAIRY + FRIDGE,"Miscellaneous, Refrig",314
+DAIRY + FRIDGE,"Prepared Food, Refrig",310
+DAIRY + FRIDGE,"Vegan Dairy, Refrigerated",306
+BREAD,BREAD,281
+BULK,"Tea, Bulk",280
+MEAT + SEAFOOD,MEAT + SEAFOOD,262
+HOUSEHOLD,HOUSEHOLD,254
+FROZEN,"Miscellaneous, Frozen",252
+PET SUPPLY,"Cat Food, Shelf Stable",251
+DRINKS,DRINKS,224
+MEAT + SEAFOOD,SEAFOOD,188
+DRINKS,"Juice, Shelf Stable",178
+HOUSEHOLD,Seeds,175
+PERSONAL CARE,Deodorant & Shaving,167
+FROZEN,"Bread, Frozen",144
+PERSONAL CARE,PERSONAL CARE,141
+BULK,BULK,136
+PERSONAL CARE,Moon Time,134
+MEAT + SEAFOOD,Pork,127
+MEAT + SEAFOOD,Lamb,112
+GROCERY,"Meals, Shelf Stable",111
+BULK,"Pasta, Bulk",109
+FROZEN,"Seafood, Frozen",102
+ALCOHOLIC BEVERAGES,ALCOHOLIC BEVERAGES,98
+SUPPLEMENTS,Supplements,98
+MEAT + SEAFOOD,"Meat, Misc",96
+PERSONAL CARE,Hair Care,93
+BULK,Household & Gifts Bulk (per each),86
+DAIRY + FRIDGE,"Milk, Other, Refrig",82
+GROCERY,"Dried Fruit, Veg & Nuts Shelf Stable",75
+DRINKS,"Water, Still",55
+FROZEN,"Miscellanous, Frozen",49
+DONATIONS AND STORE CREDIT,Donation,43
+GROCERY,"Salad Dressing, Shelf Stable",36
+PET SUPPLY,"Dog Food, Shelf Stable",15
+PET SUPPLY,"Pet, Misc",10
+SUPPLEMENTS,SUPPLEMENTS,9
+DAIRY + FRIDGE,"Salad Dressing, Refrig",2
+"Vegan Dairy, Refrig","Vegan Dairy, Refrig",1
+ALCOHOLIC BEVERAGES,Wine,1
