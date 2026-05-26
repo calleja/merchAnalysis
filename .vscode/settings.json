@@ -1,9 +1,7 @@
 {
-    "python-envs.pythonProjects": [
-        {
-            "path": "",
-            "envManager": "ms-python.python:venv",
-            "packageManager": "ms-python.python:pip"
-        }
-    ]
-}
+    "python.defaultInterpreterPath": "/Users/casita/Documents/python_venvs/general_use/bin/python",
+    "jupyter.kernels.filter": [],
+    "notebook.kernelProviderAssociations": {
+      "*.ipynb": "ms-toolsai.jupyter"
+    }
+  }
