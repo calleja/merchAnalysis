@@ -1,10 +1,38 @@
 import pandas as pd
 
+# %%
 def clean_df(df):
+    """ order_date, test"""
     df.columns = [i.replace(' ', '_').lower() for i in df.columns]
     df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
     df = df.assign(order_date_str = df['order_date'].dt.date)
     return df
+
+
+# %%
+
+#check columns names with this decorator
+def check_columns(func):
+    def wrapper(df):
+    #only works for functions where the only parameter is a dataframe
+        required = [c.strip() for c in func.__doc__.split(',')]
+        if all(col in df.columns for col in required):
+            return func(df)
+        else:
+            print(f"Error: {func.__doc__} not found in columns")
+            return None
+    return wrapper
+
+@check_columns
+def remove_negative(df):
+    #remove order IDs having total sales < 0
+    #function helper comments
+    """order_id,sales,discount_and_reward"""
+    #expected = a df with columns: order_id, sales_sum, discount_sum
+    neg_sales = df.groupby(['order_id']).agg(sales_sum=('sales','sum'),discount_sum=('discount_and_reward','sum')).query('sales_sum <0').reset_index()
+    non_neg = df[~df['order_id'].isin(neg_sales['order_id'])]
+    return non_neg
+
 
 def subset_shopping(df):
     cols = ['barcode','brand','department','items_total','order_date',
@@ -47,12 +75,10 @@ def clean_df2(df):
     df = df.assign(order_date_str = df['order_date'].dt.date)
     return df
 
+@check_columns
 def subset_shopping2(df):
+    """ barcode, brand, department, items_amount, order_date, product_name_id, quantity, sub_department, order_id, sales, order_date_str """
     cols = ['barcode','brand','department','items_amount','order_date',
 'product_name_id','quantity','sub_department','order_id','sales','order_date_str']
-    try:
-        df2 = df.loc[:,cols]
-    except KeyError as e:
-        print(f"Missing columns: {e}")
-        df2 = df
+    df2 = df.loc[:,cols]
     return df2

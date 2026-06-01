@@ -3,5 +3,12 @@
     "jupyter.kernels.filter": [],
     "notebook.kernelProviderAssociations": {
       "*.ipynb": "ms-toolsai.jupyter"
-    }
+    },
+    "python-envs.pythonProjects": [
+      {
+        "path": "",
+        "envManager": "ms-python.python:venv",
+        "packageManager": "ms-python.python:pip"
+      }
+    ]
   }

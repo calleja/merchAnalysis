@@ -6,5 +6,5 @@
         "/Users/casita/Documents/python_venvs"
     ],
     "python.venvPath": "/Users/casita/Documents/python_venvs",
-    "python.defaultInterpreterPath": "/Users/casita/Documents/python_venvs/general_use/bin/python"
+    "python.defaultInterpreterPath": "/Users/casita/Documents/python_venvs/analytics_duckdb/bin/python"
 }
