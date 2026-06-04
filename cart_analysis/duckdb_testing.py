@@ -36,24 +36,23 @@ print(con.table("df").dtypes)
 print(con.execute("DESCRIBE TABLE df").df())
 
 # %%
+# order metadata along with a list of unique departments (as an array)
 con.execute(
 """
 SELECT order_id, order_date_str, array_agg(DISTINCT department) dept_array, 
-SUM(sales) AS order_sales, SUM(quantity) AS order_quantity,
-struct_pack(k:=department, v:=sum(quantity)) AS dept_quant
+SUM(sales) AS order_sales, SUM(quantity) AS order_quantity
 FROM df
 GROUP BY 1,2
 LIMIT 3
 """).df()
 
 # %%
-# map() takes parallel key/value arrays, not scalar pairs — build entries then aggregate:
-#   dept_data['GROCERY']  or  map_extract_value(dept_data, 'GROCERY')
+# requires a subquery: order metadata along with ea component deparment and # of items in order
 con.execute(
 """
 SELECT
     order_id, order_date_str, 
-    SUM(dept_sales) AS order_sales, SUM(dept_qty) AS order_quantity,
+    SUM(dept_sales) AS order_sales_all, SUM(dept_qty) AS order_quantity_all,
     list(DISTINCT department) AS dept_array,
     map_from_entries(list(struct_pack(k := department, v := dept_qty))) AS dept_data
 FROM (
@@ -66,30 +65,30 @@ GROUP BY 1,2
 LIMIT 3;
 """).df()
 
+
 # %%
-# Query dept_data: bracket access, map_extract_value, or unnest via map_entries
-con.execute(
+# in order to facilitate the average cart value by deparment, I need order metadata alongside each deparment; this can simply be done by broadcasting the list of unique deparments along the order metadata
+#store the resulset as a df
+df2 = con.execute(
 """
-WITH per_order AS (
-    SELECT
-        order_id,
-        order_date_str,
-        map_from_entries(list(struct_pack(k := department, v := sum_qty))) AS dept_data
-    FROM (
-        SELECT order_id, order_date_str, department, SUM(quantity) AS sum_qty
-        FROM df
-        GROUP BY ALL
-    )
-    GROUP BY ALL
-)
-SELECT
-    order_id,
-    order_date_str,
-    dept_data,
-    dept_data['GROCERY'] AS grocery_qty,
-    map_extract_value(dept_data, 'PRODUCE') AS produce_qty
-FROM per_order
-LIMIT 3;
+SELECT order_id, order_date_str, unnest(dept_array) dept, order_sales, order_quantity
+FROM (
+    SELECT order_id, order_date_str, array_agg(DISTINCT department) dept_array, 
+    SUM(sales) AS order_sales, SUM(quantity) AS order_quantity
+    FROM df
+    GROUP BY 1,2
+    LIMIT 3
+) as t
 """).df()
 
+# %%
+#look at a monthly avg of cart value by department (ie if the department appears in the cart, what is the average cart sales value)
+con.register("df2", df2)
+
+con.execute("""
+select date_trunc('month',order_date_str) as month, dept, avg(order_sales) as avg_cart_sales, avg(order_quantity) as avg_cart_quantity
+from df2
+group by 1,2
+order by 1,2
+""").df()
 # %%
