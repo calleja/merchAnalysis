@@ -47,7 +47,8 @@ LIMIT 3
 """).df()
 
 # %%
-# requires a subquery: order metadata along with ea component deparment and # of items in order
+# compile order metadata along with department level data: unq list of depts and a dict of dept: qty purchased
+# requires a subquery: total order metadata along with ea component department and # of items in order
 con.execute(
 """
 SELECT
@@ -67,7 +68,7 @@ LIMIT 3;
 
 
 # %%
-# in order to facilitate the average cart value by deparment, I need order metadata alongside each deparment; this can simply be done by broadcasting the list of unique deparments along the order metadata
+# broadcasting to measure average cart value by department; I need order metadata alongside each deparment; this can simply be done by broadcasting the list of unique deparments along the order metadata
 #store the resulset as a df
 df2 = con.execute(
 """

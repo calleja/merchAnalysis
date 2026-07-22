@@ -1,4 +1,5 @@
 import pandas as pd
+import duckdb as ddb
 
 # %%
 def clean_df(df):
@@ -6,6 +7,9 @@ def clean_df(df):
     df.columns = [i.replace(' ', '_').lower() for i in df.columns]
     df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
     df = df.assign(order_date_str = df['order_date'].dt.date)
+
+    #remove credit and donations rows
+    df = df[df['department'] != 'DONATIONS AND STORE CREDIT']
     return df
 
 
@@ -13,13 +17,13 @@ def clean_df(df):
 
 #check columns names with this decorator
 def check_columns(func):
-    def wrapper(df):
-    #only works for functions where the only parameter is a dataframe
+    def wrapper(df,*args):
+    #only works for functions where the only parameter is a dataframe & the "doc" of the funct contains col names
         required = [c.strip() for c in func.__doc__.split(',')]
         if all(col in df.columns for col in required):
-            return func(df)
+            return func(df, *args)
         else:
-            print(f"Error: {func.__doc__} not found in columns")
+            print(f"Error returned from custom function check_columns: {func.__doc__} not found in columns")
             return None
     return wrapper
 
@@ -73,6 +77,9 @@ def clean_df2(df):
     df.columns = [to_underscored(i).lower() for i in df.columns]
     df['order_date'] = pd.to_datetime(df['order_date'], errors='coerce')
     df = df.assign(order_date_str = df['order_date'].dt.date)
+
+    #remove credit and donations rows
+    df = df[df['department'] != 'DONATIONS AND STORE CREDIT']
     return df
 
 @check_columns
@@ -81,4 +88,21 @@ def subset_shopping2(df):
     cols = ['barcode','brand','department','items_amount','order_date',
 'product_name_id','quantity','sub_department','order_id','sales','order_date_str']
     df2 = df.loc[:,cols]
+    return df2
+
+#prepare df for one-hot encoding for mlxtend modeling
+@check_columns
+def encoding(df: pd.DataFrame, product_col:str):
+    """order_date_str, department, order_id """
+    con = ddb.connect()
+    con.register("df", df)
+    df2 = con.execute(
+        """
+        SELECT date_trunc('week',order_date_str) as week, order_id, 
+        array_agg(distinct department) as dept_list
+        FROM df
+        GROUP BY 1,2
+        """).df()
+    #create a list of lists from the column/series with name 'product_col'
+    df2['dept_list'].to_list()
     return df2

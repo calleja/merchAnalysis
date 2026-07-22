@@ -16,7 +16,16 @@ apriori algorithm
 - confidence = P(X|Y) - the probability of seeing X given that we see Y
 - lift (ostensibly a test for independence) = (support of X&Y) / [support(X) * support(Y)] ... if this eq > 1 then we can say there is a dependence between the two values (x and y)
 
+Beyon apriori...
 Eclat algorithm is a bit more efficient of the apriori algorithm
+Several algorithms have been developed to address Apriori’s limitations. The FP-Growth algorithm uses a compact tree structure to avoid multiple database scans, making it significantly faster for large datasets. ECLAT employs a depth-first search strategy using transaction ID sets. More recent developments include algorithms for mining sequential patterns, multi-level associations, and rare itemsets.
 
 STEPS:
 1) identify a support threshold to qualify itemsets
+
+PYTHON LIBRARIES
+- mlxtend: straightforward implementations of Apriori and FP-Growth with pandas integration
+- surprise: recommender systems
+
+DATA PRE-PROCESSING
+- mlxtend: one-hot encoding
